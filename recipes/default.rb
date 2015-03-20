@@ -25,7 +25,8 @@ when 'source'
   bash "install_wal_e" do
     cwd code_path
     code <<-EOH
-      /usr/bin/python ./setup.py install
+      pip install -r requirements.txt
+      pip install .
     EOH
     action :nothing
   end
