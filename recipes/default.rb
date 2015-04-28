@@ -34,7 +34,7 @@ when 'source'
   git code_path do
     repository node[:wal_e][:repository_url]
     revision node[:wal_e][:version]
-    notifies :run, "bash[install_wal_e]"
+    notifies :run, "bash[install_wal_e]", :immediately
   end
 when 'pip'
   python_pip 'wal-e' do
