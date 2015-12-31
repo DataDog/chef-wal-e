@@ -8,7 +8,6 @@ pkg_dependencies = %w(
   postgresql-client
   pv
   python-dev
-  python-setuptools
 )
 
 # Handle older Ubuntu that had a different name
