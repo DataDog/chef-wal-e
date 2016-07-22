@@ -47,6 +47,7 @@ default[:wal_e][:base_backup][:month]   = '*'
 default[:wal_e][:base_backup][:weekday] = '1'
 
 default[:wal_e][:base_backup][:options] = nil
+default[:wal_e][:base_backup][:gpg_key_id] = nil
 
 default[:wal_e][:user]                = 'postgres'
 default[:wal_e][:group]               = 'postgres'
