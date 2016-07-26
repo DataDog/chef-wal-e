@@ -71,8 +71,8 @@ cron_d "wal_e_base_backup" do
     "/usr/bin/envdir",
     node[:wal_e][:env_dir],
     "/usr/local/bin/wal-e",
-    "backup-push",
     gpg_key,
+    "backup-push",
     node[:wal_e][:base_backup][:options],
     node[:wal_e][:pgdata_dir]
   ].join(' ')
