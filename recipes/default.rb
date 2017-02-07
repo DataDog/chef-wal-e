@@ -67,9 +67,11 @@ vars.each do |key, value|
   end
 end
 
+iam = node[:wal_e][:use_iam] ? "--aws-instance-profile" : ""
+
 cron "wal_e_base_backup" do
   user node[:wal_e][:user]
-  command "/usr/bin/envdir #{node[:wal_e][:env_dir]} /usr/local/bin/wal-e backup-push #{node[:wal_e][:base_backup][:options]} #{node[:wal_e][:pgdata_dir]}"
+  command "/usr/bin/envdir #{node[:wal_e][:env_dir]} /usr/local/bin/wal-e #{iam} backup-push #{node[:wal_e][:base_backup][:options]} #{node[:wal_e][:pgdata_dir]}"
   not_if { node[:wal_e][:base_backup][:disabled] }
 
   minute node[:wal_e][:base_backup][:minute]

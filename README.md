@@ -25,6 +25,8 @@ Attributes
 
 - [:wal_e][:pgdata_dir] - Postgres data directory, override for your postgres version
 
+- [:wal_e][:iam] - Use AWS instance profile
+
 Recipes
 -------
 

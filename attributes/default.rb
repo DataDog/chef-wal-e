@@ -38,6 +38,8 @@ default[:wal_e][:aws_secret_key]      = ''
 default[:wal_e][:aws_region]          = ''
 default[:wal_e][:s3_prefix]           = ''
 
+default[:wal_e][:use_iam]             = false
+
 default[:wal_e][:base_backup][:disabled]  = false
 default[:wal_e][:base_backup][:minute]  = '0'
 default[:wal_e][:base_backup][:hour]    = '0'
