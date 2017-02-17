@@ -11,6 +11,8 @@ end
 
 # install virtualenv
 if node[:wal_e][:virtualenv]
+  include_recipe "python::virtualenv"
+
   python_virtualenv node[:wal_e][:virtualenv][:path] do
     user node[:wal_e][:pip_user]
     group node[:wal_e][:group]
