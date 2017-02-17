@@ -10,7 +10,7 @@ unless node[:wal_e][:packages].nil?
 end
 
 # install virtualenv
-if node[:wal_e][:virtualenv]
+unless node[:wal_e][:virtualenv].nil?
   include_recipe "python::virtualenv"
 
   python_virtualenv node[:wal_e][:virtualenv][:path] do
