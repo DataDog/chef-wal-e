@@ -9,12 +9,22 @@ unless node[:wal_e][:packages].nil?
   end
 end
 
+# install virtualenv
+if node[:wal_e][:virtualenv]
+  python_virtualenv node[:wal_e][:virtualenv][:path] do
+    user node[:wal_e][:pip_user]
+    group node[:wal_e][:group]
+    interpreter node[:wal_e][:virtualenv][:interpreter] if node[:wal_e][:virtualenv][:interpreter]
+  end
+end
+
 # install python modules with pip unless overriden
 unless node[:wal_e][:pips].nil?
   include_recipe "python::pip"
   node[:wal_e][:pips].each do |pp|
     python_pip pp do
       user node[:wal_e][:pip_user]
+      virtualenv node[:wal_e][:virtualenv][:path] if node[:wal_e][:virtualenv]
     end
   end
 end
@@ -41,6 +51,7 @@ when 'pip'
   python_pip 'wal-e' do
     version node[:wal_e][:version] if node[:wal_e][:version]
     user node[:wal_e][:pip_user]
+    virtualenv node[:wal_e][:virtualenv][:path] if node[:wal_e][:virtualenv]
   end
 end
 
