@@ -15,6 +15,7 @@ if node[:wal_e][:virtualenv]
     user node[:wal_e][:pip_user]
     group node[:wal_e][:group]
     interpreter node[:wal_e][:virtualenv][:interpreter] if node[:wal_e][:virtualenv][:interpreter]
+    action :create
   end
 end
 
