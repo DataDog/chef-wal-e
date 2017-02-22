@@ -10,23 +10,20 @@ unless node[:wal_e][:packages].nil?
 end
 
 # install virtualenv
-unless node[:wal_e][:virtualenv].nil?
-  include_recipe "python::virtualenv"
-
-  python_virtualenv node[:wal_e][:virtualenv][:path] do
-    owner node[:wal_e][:pip_user]
-    group node[:wal_e][:group]
-    interpreter node[:wal_e][:virtualenv][:interpreter] if node[:wal_e][:virtualenv][:interpreter]
-    action :create
-  end
+if node[:wal_e][:virtualenv][:enabled]
+  include_recipe "wal-e::virtualenv"
 end
+
+activate = node[:wal_e][:virtualenv][:enabled] ? "#{node[:wal_e][:virtualenv][:helper]} #{node[:wal_e][:virtualenv][:activate]}" : ''
+wale_bin = node[:wal_e][:virtualenv][:enabled] ? "#{node[:wal_e][:virtualenv][:path]}/bin/wal-e" : '/usr/local/bin/wal-e'
+pip_user = node[:wal_e][:virtualenv][:enabled] ? node[:wal_e][:user] : node[:wal_e][:pip_user]
 
 # install python modules with pip unless overriden
 unless node[:wal_e][:pips].nil?
   include_recipe "python::pip"
   node[:wal_e][:pips].each do |pp|
     python_pip pp do
-      user node[:wal_e][:pip_user]
+      user pip_user
       virtualenv node[:wal_e][:virtualenv][:path] if node[:wal_e][:virtualenv]
     end
   end
@@ -53,8 +50,8 @@ when 'source'
 when 'pip'
   python_pip 'wal-e' do
     version node[:wal_e][:version] if node[:wal_e][:version]
-    user node[:wal_e][:pip_user]
-    virtualenv node[:wal_e][:virtualenv][:path] if node[:wal_e][:virtualenv]
+    user pip_user
+    virtualenv node[:wal_e][:virtualenv][:path] if node[:wal_e][:virtualenv][:enabled]
   end
 end
 
@@ -72,7 +69,7 @@ if node[:wal_e][:aws_access_key]
   vars['AWS_REGION'] = node[:wal_e][:aws_region]
 end
 
-vars['AWS_INSTANCE_PROFILE'] = true if node[:wal_e][:use_1_02_iam]
+vars['AWS_INSTANCE_PROFILE'] = true if node[:wal_e][:use_iam_var]
 
 vars.each do |key, value|
   file "#{node[:wal_e][:env_dir]}/#{key}" do
@@ -87,7 +84,7 @@ iam = node[:wal_e][:use_iam] ? "--aws-instance-profile" : ""
 
 cron "wal_e_base_backup" do
   user node[:wal_e][:user]
-  command "/usr/bin/envdir #{node[:wal_e][:env_dir]} /usr/local/bin/wal-e #{iam} backup-push #{node[:wal_e][:base_backup][:options]} #{node[:wal_e][:pgdata_dir]}"
+  command "/usr/bin/envdir #{node[:wal_e][:env_dir]} #{activate} #{wale_bin} #{iam} backup-push #{node[:wal_e][:base_backup][:options]} #{node[:wal_e][:pgdata_dir]}"
   not_if { node[:wal_e][:base_backup][:disabled] }
 
   minute node[:wal_e][:base_backup][:minute]
