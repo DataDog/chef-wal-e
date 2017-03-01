@@ -24,7 +24,7 @@ unless node[:wal_e][:pips].nil?
   node[:wal_e][:pips].each do |pp|
     python_pip pp do
       user pip_user
-      virtualenv node[:wal_e][:virtualenv][:path] if node[:wal_e][:virtualenv]
+      virtualenv node[:wal_e][:virtualenv][:path] if node[:wal_e][:virtualenv] && node[:wal_e][:virtualenv][:enabled]
     end
   end
 end
@@ -51,7 +51,7 @@ when 'pip'
   python_pip 'wal-e' do
     version node[:wal_e][:version] if node[:wal_e][:version]
     user pip_user
-    virtualenv node[:wal_e][:virtualenv][:path] if node[:wal_e][:virtualenv][:enabled]
+    virtualenv node[:wal_e][:virtualenv][:path] if node[:wal_e][:virtualenv] && node[:wal_e][:virtualenv][:enabled]
   end
 end
 
