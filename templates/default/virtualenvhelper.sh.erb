@@ -1,0 +1,6 @@
+#!/bin/bash
+. "<%= node[:wal_e][:virtualenv][:activate] %>
+shift 1
+#echo "Executing $@ in ${VENV}"
+exec "$@"
+deactivate

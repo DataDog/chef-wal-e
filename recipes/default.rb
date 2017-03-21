@@ -14,7 +14,7 @@ if node[:wal_e][:virtualenv][:enabled]
   include_recipe "wal-e::virtualenv"
 end
 
-activate = node[:wal_e][:virtualenv][:enabled] ? "#{node[:wal_e][:virtualenv][:helper]} #{node[:wal_e][:virtualenv][:activate]}" : ''
+venv_wrapper = node[:wal_e][:virtualenv][:enabled] ? "#{node[:wal_e][:virtualenv][:helper]}" : ''
 wale_bin = node[:wal_e][:virtualenv][:enabled] ? "#{node[:wal_e][:virtualenv][:path]}/bin/wal-e" : '/usr/local/bin/wal-e'
 pip_user = node[:wal_e][:virtualenv][:enabled] ? node[:wal_e][:user] : node[:wal_e][:pip_user]
 
@@ -84,7 +84,7 @@ iam = node[:wal_e][:use_iam] ? "--aws-instance-profile" : ""
 
 cron "wal_e_base_backup" do
   user node[:wal_e][:user]
-  command "/usr/bin/envdir #{node[:wal_e][:env_dir]} #{activate} #{wale_bin} #{iam} backup-push #{node[:wal_e][:base_backup][:options]} #{node[:wal_e][:pgdata_dir]}"
+  command "/usr/bin/envdir #{node[:wal_e][:env_dir]} #{venv_wrapper} #{wale_bin} #{iam} backup-push #{node[:wal_e][:base_backup][:options]} #{node[:wal_e][:pgdata_dir]}"
   not_if { node[:wal_e][:base_backup][:disabled] }
 
   minute node[:wal_e][:base_backup][:minute]

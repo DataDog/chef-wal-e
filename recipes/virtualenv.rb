@@ -1,7 +1,7 @@
 include_recipe 'python::virtualenv'
 
-cookbook_file node[:wal_e][:virtualenv][:helper] do
-  source 'virtualenvhelper.sh'
+template node[:wal_e][:virtualenv][:helper] do
+  source 'virtualenvhelper.sh.erb'
   path   node[:wal_e][:virtualenv][:helper]
   owner  node[:wal_e][:user]
   mode 0755
