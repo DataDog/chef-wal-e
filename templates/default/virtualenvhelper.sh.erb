@@ -1,6 +1,6 @@
 #!/bin/bash
-. "<%= node[:wal_e][:virtualenv][:activate] %>
-shift 1
+VENV=<%= node[:wal_e][:virtualenv][:activate] %>
+. $VENV
 #echo "Executing $@ in ${VENV}"
 exec "$@"
 deactivate
