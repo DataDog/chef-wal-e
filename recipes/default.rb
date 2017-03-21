@@ -69,7 +69,7 @@ if node[:wal_e][:aws_access_key]
   vars['AWS_REGION'] = node[:wal_e][:aws_region]
 end
 
-vars['AWS_INSTANCE_PROFILE'] = true if node[:wal_e][:use_iam_var]
+vars['AWS_INSTANCE_PROFILE'] = 'true' if node[:wal_e][:use_iam_var]
 
 vars.each do |key, value|
   file "#{node[:wal_e][:env_dir]}/#{key}" do
